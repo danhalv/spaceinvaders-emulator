@@ -1,5 +1,7 @@
 #include "spaceinvaders/arcade_machine.h"
 
+#include <unistd.h>		//temp
+
 machine_t* create_machine() {
 
 	machine_t *machine = calloc(1, sizeof(machine_t));	
@@ -35,9 +37,7 @@ void machine_update_state(machine_t *machine) {
 
 		int start_cycles = machine->cpu.cycles;
 
-		//i8080_disassemble(machine->memory, machine->cpu.pc);
 		i8080_step(&machine->cpu);
-		//i8080_print(&machine->cpu);
 	
 		cycle_count += machine->cpu.cycles - start_cycles;
 		

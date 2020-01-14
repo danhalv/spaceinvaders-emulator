@@ -68,8 +68,62 @@ void handle_input() {
 		switch(event.type) {
 
 			case SDL_KEYDOWN:
+
 				if(event.key.keysym.sym == SDLK_q)
 					app_should_run = 0;
+
+				if(event.key.keysym.sym == SDLK_c) 
+					machine->in_port1 |= (1 << 0);	//coin deposit
+
+				if(event.key.keysym.sym == SDLK_2)
+					machine->in_port1 |= (1 << 1);	//2P start
+
+				if(event.key.keysym.sym == SDLK_RETURN)
+					machine->in_port1 |= (1 << 2);	//1P start
+
+				if(event.key.keysym.sym == SDLK_SPACE) {
+					machine->in_port1 |= (1 << 4);	//1P shot
+					machine->in_port2 |= (1 << 4);	//2P shot
+				}
+
+				if(event.key.keysym.sym == SDLK_LEFT) {
+					machine->in_port1 |= (1 << 5);	//1P left
+					machine->in_port2 |= (1 << 5);	//2P left
+				}
+
+				if(event.key.keysym.sym == SDLK_RIGHT) {
+					machine->in_port1 |= (1 << 6);	//1P right
+					machine->in_port2 |= (1 << 6);	//2P right
+				}
+			break;
+
+			case SDL_KEYUP:
+				if(event.key.keysym.sym == SDLK_c) 
+					machine->in_port1 &= ~(1 << 0);	//coin deposit
+
+				if(event.key.keysym.sym == SDLK_2)
+					machine->in_port1 &= ~(1 << 1);	//2P start
+
+				if(event.key.keysym.sym == SDLK_RETURN)
+					machine->in_port1 &= ~(1 << 2);	//1P start
+
+				if(event.key.keysym.sym == SDLK_SPACE) {
+					machine->in_port1 &= ~(1 << 4);	//1P shot
+					machine->in_port2 &= ~(1 << 4);	//2P shot
+				}
+
+				if(event.key.keysym.sym == SDLK_LEFT) {
+					machine->in_port1 &= ~(1 << 5);	//1P left
+					machine->in_port2 &= ~(1 << 5);	//2P left
+				}
+
+				if(event.key.keysym.sym == SDLK_RIGHT) {
+					machine->in_port1 &= ~(1 << 6);	//1P right
+					machine->in_port2 &= ~(1 << 6);	//2P right
+				}			
+
+				machine->in_port1 |= (1 << 3);		//reset bit3. should always be set.
+			break;
 		}
 	}
 }
