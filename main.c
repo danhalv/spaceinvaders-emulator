@@ -1,6 +1,9 @@
 #include <SDL2/SDL.h>
 
-#include "spaceinvaders/arcade_machine.h"
+#include "arcade_machine/arcade_machine.h"
+
+#define WINDOW_WIDTH 	MACHINE_SCREEN_WIDTH * 3
+#define WINDOW_HEIGHT	MACHINE_SCREEN_HEIGHT * 3
 
 //SDL components
 static SDL_Window *window;
@@ -18,8 +21,8 @@ void init_sdl_components() {
 		"Space Invaders",
 		SDL_WINDOWPOS_UNDEFINED,
 		SDL_WINDOWPOS_UNDEFINED,
-		MACHINE_SCREEN_WIDTH,
-		MACHINE_SCREEN_HEIGHT,
+		WINDOW_WIDTH,
+		WINDOW_HEIGHT,
 		SDL_WINDOW_RESIZABLE
 	);
 
@@ -66,6 +69,10 @@ void handle_input() {
 	while(SDL_PollEvent(&event)) {
 		
 		switch(event.type) {
+
+			case SDL_QUIT:
+				app_should_run = 0;
+				break;
 
 			case SDL_KEYDOWN:
 
