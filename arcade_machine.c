@@ -1,6 +1,4 @@
-#include "spaceinvaders/arcade_machine.h"
-
-#include <unistd.h>		//temp
+#include "arcade_machine/arcade_machine.h"
 
 machine_t* create_machine() {
 
@@ -11,7 +9,7 @@ machine_t* create_machine() {
 	init_i8080(&machine->cpu);
 	machine->cpu.external_memory = machine->memory;		//set cpu's memory reference to memory of machine
 
-	machine->next_interrupt = 1;	//RST 1 => 0x08 (mid-screen interrupt) | RST 2 => 0x10 (end of screen interrupt)
+	machine->next_interrupt = 1;
 	machine->in_port1 = 1 << 3;		//bit 3 always set
 	machine->in_port2 = 0;
 	machine->shift0 = 0;
@@ -32,7 +30,7 @@ void destroy_machine(machine_t *machine) {
 void machine_update_state(machine_t *machine) {
 
 	int cycle_count = 0;
-	
+
 	while(cycle_count <= MACHINE_CYCLES_PER_FRAME) {
 
 		int start_cycles = machine->cpu.cycles;
@@ -84,21 +82,21 @@ void machine_update_state(machine_t *machine) {
 
 		//RST 1 (0x08) interrupt when rendering reaches middle of screen 
 		//RST 2 (0x10) interrupt at end of screen
-		if(machine->cpu.cycles >= (MACHINE_CYCLES_PER_FRAME / 2)) {
+		if(machine->cpu.cycles >= MACHINE_HALF_CYCLES_PER_FRAME) {
 	
 			if(machine->cpu.ie) {
 				machine->cpu.ie = 0;
 				i8080_rst(&machine->cpu, machine->next_interrupt);		
-				machine->cpu.cycles += 11;
+				machine->cpu.cycles += 11;	//cycles taken by an interrupt
 			}
 
-			machine->cpu.cycles -= (MACHINE_CYCLES_PER_FRAME / 2);
+			machine->cpu.cycles -= MACHINE_HALF_CYCLES_PER_FRAME;
 			machine->next_interrupt = machine->next_interrupt == 1 ? 2 : 1;
 		}
 	}	
 }
 
-//called every frame
+//called every frame, black and white
 void machine_update_screen_buffer(machine_t *machine) {
 
 	for(int x = 0; x < MACHINE_SCREEN_WIDTH; x++) {
