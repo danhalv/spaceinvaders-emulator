@@ -6,6 +6,14 @@ This is an emulation of the 1978 arcade machine used to play Space Invaders writ
 
 ## How to build
 
+##### ROMs
+First of all the project requires the ROM files for the game. These are copyrighted and can't uploaded with the project, but can be found online. 
+In the project folder they should be saved in a folder called **/res/roms/**. The following files are required:
+* _invaders.e_
+* _invaders.f_
+* _invaders.g_
+* _invaders.h_
+
 Building the project requires a **C compiler** and is easiest built using **make**.
 
 ##### Dependencies:
